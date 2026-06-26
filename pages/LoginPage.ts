@@ -1,70 +1,4 @@
-import BasePage from './BasePage.js';
-import { expect, type Page } from '@playwright/test';
 
-class LoginPage extends BasePage{
-
-  /**
-   * @param {import('@playwright/test').Page} page
-   */
-    constructor(page: Page) {
-        super(page);
-        this.page = page;
-    }
-
-    locators = {
-        loginPageTitle: `//h2[text()=' Sign In']`,
-        userName: `[placeholder="Your email address"]`,
-        password: `[placeholder="Your password"]`,
-        loginButton: `//button[text()='Sign in']`,
-        invalidLoginError: '[data-test="error"]',
-        userIcon: `//*[name()='svg'][.//*[name()='path' and contains(@d,'M25.1578 1')]]`,
-        logoutButton: `//p[text()='Log Out']`,
-        signupLink: `Sign up`,
-        successSignInMessage: `Logged in successfully`,
-    }
-
-    async navigateToLoginPage() {
-        await this.navigateTo('/');
-    }
-
-    getLoginPageTitle() {
-        return this.page.locator(this.locators.loginPageTitle);
-    }
-
-    getUserNameInput() {
-        return this.page.locator(this.locators.userName);
-    }
-
-    getPasswordInput() {
-        return this.page.locator(this.locators.password);
-    }
-
-    getLoginButton() {
-        return this.page.locator(this.locators.loginButton);
-    }
-
-    async clickUserIcon() {
-        await this.page.locator(this.locators.userIcon).click();
-    }
-
-    async clickOnUserProfileIcon() {
-        const icon = this.page.locator(this.locators.userIcon).first();
-        await icon.waitFor({ state: 'visible', timeout: 15000 });
-        await icon.click();
-    }
-
-    async assertLoginPage() {
-        await expect(this.getLoginPageTitle()).toBeVisible();
-        await expect(this.getUserNameInput()).toBeVisible();
-        await expect(this.getPasswordInput()).toBeVisible();
-        await expect(this.getLoginButton()).toBeVisible();
-    }
-
-    async login(username: string, password:string) {
-        await this.page.fill(this.locators.userName, username);
-        await this.page.fill(this.locators.password, password);
-        await this.page.click(this.locators.loginButton);
-        await this.page.waitForTimeout(2000);
     }
 
     async clickOnLogoutButton() {
@@ -74,13 +8,4 @@ class LoginPage extends BasePage{
         await expect(this.getLoginPageTitle()).toBeVisible({ timeout: 15000 });
     }
 
-    async clickOnSignupLink() {
-        await this.page.getByText(this.locators.signupLink).click();
-    }
-
-    async verifySuccessSignIn() {
-        await expect(this.page.getByText(this.locators.successSignInMessage)).toBeVisible({ timeout: 10000 });
-    }
-}
-
-export default LoginPage;
+   
